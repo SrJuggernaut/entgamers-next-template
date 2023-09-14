@@ -19,7 +19,8 @@ const Footer: FC = () => {
       <Container
         className={css({
           display: 'grid',
-          gridTemplateColumns: { base: '1fr', mdToXxl: '1fr 1fr 1fr' }
+          gridTemplateColumns: { base: '1fr 1fr 1fr', mdDown: '1fr' },
+          gap: 'medium'
         })}
       >
         <div>

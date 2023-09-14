@@ -6,10 +6,11 @@ import gsap from 'gsap'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState, type FC } from 'react'
+import { createPortal } from 'react-dom'
 
 const menuItems = [
-  { label: 'EntGamers.pro', href: 'https://entgamers.com', icon: faTree },
-  { label: 'Inicio', href: '/', icon: faHome }
+  { label: 'Inicio', href: '/', icon: faHome },
+  { label: 'EntGamers.pro', href: 'https://entgamers.pro', icon: faTree }
 ]
 
 const Menu: FC = () => {
@@ -35,14 +36,15 @@ const Menu: FC = () => {
     const tl = gsap.timeline()
     if (openMenu) {
       tl
+        .delay(0.1)
         .to(backDrop.current, { duration: 0, display: 'block' })
         .to(backDrop.current, { duration: 0.3, autoAlpha: 1, display: 'block' })
-        .fromTo(menu.current, { x: +100 }, { duration: 0.3, x: 0 }, '<+=.100')
+        .fromTo(menu.current, { x: +350 }, { duration: 0.3, x: 0 }, '<+=.100')
     } else {
       tl
-        .to(backDrop.current, { duration: 0.3, autoAlpha: 0 })
         .to(menu.current, { duration: 0.3, x: '100%' }, '<')
         .to(backDrop.current, { duration: 0, display: 'none' })
+        .to(backDrop.current, { duration: 0.3, autoAlpha: 0 })
     }
     return () => { tl.kill() }
   }, [openMenu])
@@ -53,125 +55,128 @@ const Menu: FC = () => {
         onClick={() => { setOpenMenu(true) }}
         aria-label="Open menu"
         color="primary"
+        size="medium"
       >
-        <FontAwesomeIcon icon={faBars} fixedWidth size="xl" />
+        <FontAwesomeIcon icon={faBars} fixedWidth />
       </IconButton>
-      <div
-        ref={backDrop}
-        className={css({
-          display: 'none',
-          visibility: 'hidden',
-          opacity: 0,
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundColor: 'rgba(0, 0, 0, 0.3)',
-          zIndex: 150
-        })}
-      >
+      {typeof window !== 'undefined' && createPortal((
         <div
-          ref={menu}
+          ref={backDrop}
           className={css({
-            position: 'absolute',
+            display: 'none',
+            visibility: 'hidden',
+            opacity: 0,
+            position: 'fixed',
             top: 0,
-            right: 0,
-            width: { base: '100%', sm: '250px' },
+            left: 0,
+            width: '100vw',
             height: '100vh',
-            backgroundColor: 'surface',
-            overflow: 'scroll',
-            _backdrop: {
-              backgroundColor: 'gray.900',
-              opacity: '75%'
-            }
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            zIndex: 'modalBackdrop'
           })}
         >
           <div
+            ref={menu}
             className={css({
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              width: '100%',
-              height: '60px',
-              paddingBlock: 'medium',
-              paddingInline: 'medium'
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: { base: '100%', sm: '250px' },
+              height: '100vh',
+              backgroundColor: 'surface',
+              overflow: 'scroll',
+              zIndex: 'modal',
+              _backdrop: {
+                backgroundColor: 'gray.900',
+                opacity: '75%'
+              }
             })}
           >
-            <IconButton
-              onClick={() => { setOpenMenu(false) }}
-              aria-label="Close menu"
-              color="danger"
-            >
-              <FontAwesomeIcon icon={faTimes} fixedWidth size="xl" />
-            </IconButton>
-          </div>
-          <hr className={css({
-            borderTop: '1px solid token(colors.border)'
-          })} />
-          <nav>
-            <ul
+            <div
               className={css({
-                listStyle: 'none',
-                paddingInline: '0px'
+                display: 'flex',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                width: '100%',
+                height: '60px',
+                paddingBlock: 'medium',
+                paddingInline: 'medium'
               })}
             >
-              {menuItems.map((item, index) => {
-                const AnchorClassName = css({
-                  display: 'block',
-                  paddingBlock: 'medium',
-                  paddingInline: 'small',
-                  color: '',
-                  textDecoration: 'none',
-                  transitionDuration: 'fast',
-                  transitionProperty: 'background-color, color',
-                  transitionTimingFunction: 'easeInOut',
-                  '&:hover': {
-                    backgroundColor: 'primary',
-                    color: 'primaryContrast'
-                  },
-                  '&[data-current=true]': {
-                    backgroundColor: 'info',
-                    color: 'infoContrast'
-                  }
-                })
-                return (
-                  <li
-                    key={`menu-item-${index}`}
-                  >
-                    {item.href.startsWith('/')
-                      ? (
-                        <NextLink
-                          className={AnchorClassName}
-                          href={item.href}
-                          data-current={pathName === item.href}
-                        >
-                          <FontAwesomeIcon icon={item.icon} fixedWidth size="lg" />
+              <IconButton
+                onClick={() => { setOpenMenu(false) }}
+                aria-label="Close menu"
+                color="danger"
+              >
+                <FontAwesomeIcon icon={faTimes} fixedWidth />
+              </IconButton>
+            </div>
+            <hr className={css({
+              borderTop: '1px solid token(colors.border)'
+            })} />
+            <nav>
+              <ul
+                className={css({
+                  listStyle: 'none',
+                  paddingInline: '0px'
+                })}
+              >
+                {menuItems.map((item, index) => {
+                  const AnchorClassName = css({
+                    display: 'block',
+                    paddingBlock: 'medium',
+                    paddingInline: 'small',
+                    color: '',
+                    textDecoration: 'none',
+                    transitionDuration: 'fast',
+                    transitionProperty: 'background-color, color',
+                    transitionTimingFunction: 'easeInOut',
+                    '&:hover': {
+                      backgroundColor: 'primary',
+                      color: 'primary.contrast'
+                    },
+                    '&[data-current=true]': {
+                      backgroundColor: 'info',
+                      color: 'info.contrast'
+                    }
+                  })
+                  return (
+                    <li
+                      key={`menu-item-${index}`}
+                    >
+                      {item.href.startsWith('/')
+                        ? (
+                          <NextLink
+                            className={AnchorClassName}
+                            href={item.href}
+                            data-current={pathName === item.href}
+                          >
+                            <FontAwesomeIcon icon={item.icon} fixedWidth size="lg" />
                           &nbsp;
-                          {item.label}
-                        </NextLink>
-                      )
-                      : (
-                        <a
-                          className={AnchorClassName}
-                          href={item.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          data-current={pathName === item.href}
-                        >
-                          <FontAwesomeIcon icon={item.icon} fixedWidth size="lg" />
+                            {item.label}
+                          </NextLink>
+                        )
+                        : (
+                          <a
+                            className={AnchorClassName}
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-current={pathName === item.href}
+                          >
+                            <FontAwesomeIcon icon={item.icon} fixedWidth size="lg" />
                           &nbsp;
-                          {item.label}
-                        </a>
-                      )}
-                  </li>
-                )
-              })}
-            </ul>
-          </nav>
+                            {item.label}
+                          </a>
+                        )}
+                    </li>
+                  )
+                })}
+              </ul>
+            </nav>
+          </div>
         </div>
-      </div>
-
+      ), document.body)}
     </>
   )
 }

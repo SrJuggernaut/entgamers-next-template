@@ -3,6 +3,7 @@ import EntGamersLogo from '@/components/assets/EntGamersLogo'
 import Menu from '@/components/layout/Menu'
 import { css } from '@styled/css'
 import { Container } from '@styled/jsx/container'
+import Link from 'next/link'
 import { useCallback, useEffect, useState, type FC } from 'react'
 
 const Header: FC = () => {
@@ -37,6 +38,7 @@ const Header: FC = () => {
             transitionProperty: 'background-color',
             transitionTimingFunction: 'easeInOut',
             transitionDelay: 'fast',
+            zIndex: 'sticky',
             '&[data-scroll=true]': {
               backgroundColor: 'gray.800'
             }
@@ -55,7 +57,9 @@ const Header: FC = () => {
           }
         >
           <div>
-            <EntGamersLogo height={40} />
+            <Link href="/">
+              <EntGamersLogo height={40} />
+            </Link>
           </div>
           <div>
             <Menu />
