@@ -1,8 +1,8 @@
 'use client'
 import EntGamersLogo from '@/components/assets/EntGamersLogo'
 import Menu from '@/components/layout/Menu'
-import { css } from '@styled/css'
-import { Container } from '@styled/jsx/container'
+import { css } from '@styled-system/css'
+import { Container } from '@styled-system/jsx/container'
 import Link from 'next/link'
 import { useCallback, useEffect, useState, type FC } from 'react'
 

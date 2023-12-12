@@ -1,6 +1,6 @@
 import { type MergeOmitting } from '@/types/utilities'
-import { cx } from '@styled/css'
-import { input, type InputVariantProps } from '@styled/recipes/input'
+import { cx } from '@styled-system/css'
+import { input, type InputVariantProps } from '@styled-system/recipes/input'
 import React, { type FC } from 'react'
 
 type ComposedInputProps = MergeOmitting<React.HTMLAttributes<HTMLInputElement>, InputVariantProps>

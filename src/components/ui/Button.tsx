@@ -1,6 +1,6 @@
 import { type MergeOmitting } from '@/types/utilities'
-import { cx } from '@styled/css'
-import { button, type ButtonVariantProps } from '@styled/recipes/button'
+import { cx } from '@styled-system/css'
+import { button, type ButtonVariantProps } from '@styled-system/recipes/button'
 import React, { type FC } from 'react'
 
 type ComposedButtonProps = MergeOmitting<React.HTMLAttributes<HTMLButtonElement>, ButtonVariantProps>

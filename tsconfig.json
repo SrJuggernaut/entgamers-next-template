@@ -27,8 +27,8 @@
       "@/*": [
         "./src/*"
       ],
-      "@styled/*": [
-        "./styled-system/*"
+      "@styled-system/*": [
+        "./src/styled-system/*"
       ]
     }
   },
@@ -36,8 +36,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "styled-system"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

@@ -1,6 +1,6 @@
 import { type MergeOmitting } from '@/types/utilities'
-import { cx } from '@styled/css'
-import { typography, type TypographyVariantProps } from '@styled/recipes/typography'
+import { cx } from '@styled-system/css'
+import { typography, type TypographyVariantProps } from '@styled-system/recipes/typography'
 import React, { type ElementType, type FC } from 'react'
 
 type ComposedTypographyProps = MergeOmitting<React.HTMLAttributes<HTMLElement>, TypographyVariantProps>
@@ -33,16 +33,14 @@ const variantToComponent = (variant: TypographyVariantProps['variant']): Element
   }
 }
 
-const isHeading = (text: string): boolean => {
-  return text.startsWith('h')
-}
-
 const Typography: FC<TypographyProps> = ({ children, className, component, ...rest }) => {
   const [typographyRecipeArgs, allOtherTypographyProps] = typography.splitVariantProps(rest)
   const Component = component ?? variantToComponent(typographyRecipeArgs.variant)
-  typographyRecipeArgs.color = typographyRecipeArgs.color !== undefined
-    ? typographyRecipeArgs.color
-    : typeof typographyRecipeArgs.variant === 'string' && isHeading(typographyRecipeArgs.variant) ? 'primary' : undefined
+  typographyRecipeArgs.color = typographyRecipeArgs.color ?? (
+    typeof typographyRecipeArgs.variant === 'string' && typographyRecipeArgs.variant.startsWith('h')
+      ? 'primary'
+      : 'inherit'
+  )
   return (
     <Component
       className={cx(typography(typographyRecipeArgs), className)}

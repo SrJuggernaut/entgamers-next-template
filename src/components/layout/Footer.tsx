@@ -2,9 +2,9 @@ import Typography from '@/components/ui/Typography'
 import { faFacebook, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import { faChevronRight, faEnvelope, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { css } from '@styled/css'
-import { Container } from '@styled/jsx'
-import { token } from '@styled/tokens'
+import { css } from '@styled-system/css'
+import { Container } from '@styled-system/jsx'
+import { token } from '@styled-system/tokens'
 import { type FC } from 'react'
 
 const Footer: FC = () => {
